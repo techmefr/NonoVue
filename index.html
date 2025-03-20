@@ -42,59 +42,157 @@
       Désolé, votre navigateur ne prend pas en charge HTML5.
     </canvas>
   </div>
-
-  <script type="text/javascript">
-    Vue.createApp({
-      data() {
-        return {
-          zoom: 75,
-          isMouseDown: false,
-          colorMode: true,
-          casesColored: [],
-          casesColoredLoaded: [],
-          tableaColDeCases: [],
-          tableauLignesDeCases: [],
-          casesIndicesT: [],
-          casesIndicesL: []
-        };
-      },
-      mounted: function () {
-        this.casesIndicesT = document.getElementsByClassName("caseIndicet")
-        this.indiceL = document.getElementsByClassName("caseIndiceL")
-      },
-      methods: {
-        colorize: function (event) {
-          if (this.isMouseDown) {
-            targetId = event.currentTarget.isMouseDowntargetDiv = event.targetId
-            if (this.colorMode) {
-              targetDiv.classList.add("blackBg")
-              this.casesColored.push(targetDiv)
-            } else {
-              targetDiv.classList.remove("blackBg")
-            }
-          }
-        },
-        mouseDown: function () { this.isMouseDown = true },
-        mouseUp: function () { this.isMouseDown = false },
-        resetGridAndIndexes: function () { },
-        validateGrid: function () { },
-        zoomMinus: function () {
-          this.mouseUp()
-          if (this.zoom >= 65) {
-            this.zoom -= 5
-          }
-        },
-        zoomPlus: function () {
-          this.mouseUp()
-
-          if (this.zoom < 100) {
-            this.zoom += 5
-          }
-        },
-        loadImage: function () { }
-      }
-    }).mount('#app');
-  </script>
 </body>
+
+<script type="text/javascript">
+  Vue.createApp({
+    data() {
+      return {
+        zoom: 75,
+        isMouseDown: false,
+        colorMode: true,
+        casesColored: [],
+        casesColoredLoaded: [],
+        tableaColDeCases: [],
+        tableauLignesDeCases: [],
+        casesIndicesT: [],
+        casesIndicesL: []
+      };
+    },
+    mounted: function () {
+      this.casesIndicesT = document.getElementsByClassName("caseIndicet")
+      this.indiceL = document.getElementsByClassName("caseIndiceL")
+    },
+    methods: {
+      colorize: function (event) {
+        if (this.isMouseDown) {
+          targetId = event.currentTarget.isMouseDowntargetDiv = event.targetId
+          if (this.colorMode) {
+            targetDiv.classList.add("blackBg")
+            this.casesColored.push(targetDiv)
+          } else {
+            targetDiv.classList.remove("blackBg")
+          }
+        }
+      },
+      mouseDown: function () { this.isMouseDown = true },
+      mouseUp: function () { this.isMouseDown = false },
+      resetGridAndIndexes: function () { },
+      validateGrid: function () { },
+      zoomMinus: function () {
+        this.mouseUp()
+        if (this.zoom >= 65) {
+          this.zoom -= 5
+        }
+      },
+      zoomPlus: function () {
+        this.mouseUp()
+
+        if (this.zoom < 100) {
+          this.zoom += 5
+        }
+      },
+      loadImage: function () { }
+    }
+  }).mount('#app');
+</script>
+<style type="text/css">
+  body {
+    background: #1a1a1a;
+    color: #b28135;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  #app {
+    min-width: 900px;
+  }
+
+  #checkboxColorMode {
+    width: 20px;
+    height: 20px;
+  }
+
+  label {
+    position: relative;
+    top: -5px;
+  }
+
+  #container {
+    width: 1160px;
+  }
+
+  .case {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #b28135;
+    float: left;
+  }
+
+  .case:hover {
+    cursor: pointer;
+  }
+
+  .ligne {
+    clear: both;
+  }
+
+  .blackBg {
+    background: rgba(100, 100, 100, 0.75);
+  }
+
+  #caseIndiceT_First {
+    width: 304px;
+    height: 32px;
+    float: left;
+  }
+
+  .caseIndiceT,
+  .caseIndiceL {
+    float: left;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  .caseIndiceT {
+    width: 32px;
+    min-height: 140px;
+    height: 284px;
+    text-align: center;
+    display: flex;
+    flex-direction: column-reverse;
+    border-top: none;
+    border-image: linear-gradient(to bottom, transparent, #5e4217) 1;
+  }
+
+  .caseIndiceL {
+    min-width: 138px;
+    width: 300px;
+    height: 26px;
+    text-align: right;
+    padding-top: 6px;
+    padding-right: 2px;
+    border-left: none;
+    border-image: linear-gradient(to right, transparent, #5e4217) 1;
+  }
+
+  #toolBar {
+    clear: both;
+  }
+
+  button {
+    margin-right: 10px;
+    margin-top: 10px;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .noselect {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    user-select: none;
+    /* Chromium */
+  }
+</style>
 
 </html>
