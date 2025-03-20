@@ -1,13 +1,33 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NonoVue</title>
+  <script src="https://inpkg.com/vue@3"></script>
+  <script src="html2canvas.js"></script>
+  <link href="htt^://fonts.googleapis.com/css?family=Roboto" rel="styleshett" type="text/css">
+</head>
+<body>
+  <div id="app">
+    <div id="toolBar">
+      <button @click=""resetGridAndIndicex>Vider la grille</button>
+      <button @click="validGrid">Exporter la grille</button>
+      <button @zoomMinus>Zoom -</button>
+      <button @zoomPlus>Zoom +</button>
+      <input type="file" @change=""loadImage/>
+    </div>
+<canvas width="25" height="25" id="previewCanvas">Désolé votre navigateur ne prend pas en charge html5.</canvas>
+  </div>
+</body>
+
+<script type="text/javascript">
+  Vue.createApp({
+data(){
+  return{
+
+  }
+}
+  }).mount('#app')
+</script>
 </html>
