@@ -4,30 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NonoVue</title>
-  <script src="https://inpkg.com/vue@3"></script>
-  <script src="html2canvas.js"></script>
-  <link href="htt^://fonts.googleapis.com/css?family=Roboto" rel="styleshett" type="text/css">
+  <script src="https://inpkg.com/vue@3" defer></script>
+  <script src="html2canvas.js" defer></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div id="app">
     <div id="toolBar">
-      <button @click=""resetGridAndIndicex>Vider la grille</button>
-      <button @click="validGrid">Exporter la grille</button>
-      <button @zoomMinus>Zoom -</button>
-      <button @zoomPlus>Zoom +</button>
-      <input type="file" @change=""loadImage/>
+      <button @click="resetGridAndIndexes">Vider la grille</button>
+      <button @click="validateGrid">Exporter la grille</button>
+      <button @click="zoomMinus">Zoom -</button>
+      <button @click="zoomPlus">Zoom +</button>
+      <input type="file" @change="loadImage"/>
     </div>
-<canvas width="25" height="25" id="previewCanvas">Désolé votre navigateur ne prend pas en charge html5.</canvas>
+    <canvas width="25" height="25" id="previewCanvas">
+      Désolé, votre navigateur ne prend pas en charge HTML5.
+    </canvas>
   </div>
+
+  <script type="text/javascript">
+    Vue.createApp({
+      data() {
+        return {
+          zoom: 75,
+          isMouseDown: false
+        };
+      },
+      methods: {
+        mousedown: function (){this.isMouseDown= true},
+        mouseUp: function (){this.isMouseDown=false},
+        resetGridAndIndexes: function () {},
+        validateGrid: function () {},
+        zoomMinus: function () {
+          this.mouseUp()
+          if (this.zoom>= 65){
+            this.zoom -=5
+          }
+        },
+        zoomPlus: function () {
+          this.mouseUp()
+
+          if (this.zoom<100){
+            this.zoom+=5
+          }
+        },
+        loadImage: function () {}
+      }
+    }).mount('#app');
+  </script>
 </body>
-
-<script type="text/javascript">
-  Vue.createApp({
-data(){
-  return{
-
-  }
-}
-  }).mount('#app')
-</script>
 </html>
