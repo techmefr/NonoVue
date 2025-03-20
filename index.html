@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +9,34 @@
   <script src="html2canvas.js" defer></script>
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 </head>
+
 <body>
   <div id="app">
+    <input type="checkbox" name="checkboxColorMode" v-model="colorMode">
+    <label for="checkboxColorMode">Activer le mode coloration</label>
+
+    <div id="container" :style="'zoom:'+zoom+'%'"></div>
+
+    <!-- Indices du haut -->
+    <div id="caseIndiceT_first"></div>
+    <div class="caseIndiceT noselect" v-for="c in 25" :id="'indiceT_'+c"></div>
+
+    <!-- Grille -->
+    <div class="ligne" v-for="1 in 25"><span v-for="c in 25">
+        <!-- Indices à gauche -->
+        <div v-if="c===1" class="caseIndiceL noselect" id="'indiceL_'+1"></div>
+        <!-- Cases de la ligne -->
+        <div class="case" :id="1+'_'+c" @mouseover="colorize" @mouseodwn="mouseDown" @mouseup="mouseUp"></div>
+
+
+      </span></div>
+
     <div id="toolBar">
       <button @click="resetGridAndIndexes">Vider la grille</button>
       <button @click="validateGrid">Exporter la grille</button>
       <button @click="zoomMinus">Zoom -</button>
       <button @click="zoomPlus">Zoom +</button>
-      <input type="file" @change="loadImage"/>
+      <input type="file" @change="loadImage" />
     </div>
     <canvas width="25" height="25" id="previewCanvas">
       Désolé, votre navigateur ne prend pas en charge HTML5.
@@ -27,30 +48,53 @@
       data() {
         return {
           zoom: 75,
-          isMouseDown: false
+          isMouseDown: false,
+          colorMode: true,
+          casesColored: [],
+          casesColoredLoaded: [],
+          tableaColDeCases: [],
+          tableauLignesDeCases: [],
+          casesIndicesT: [],
+          casesIndicesL: []
         };
       },
+      mounted: function () {
+        this.casesIndicesT = document.getElementsByClassName("caseIndicet")
+        this.indiceL = document.getElementsByClassName("caseIndiceL")
+      },
       methods: {
-        mousedown: function (){this.isMouseDown= true},
-        mouseUp: function (){this.isMouseDown=false},
-        resetGridAndIndexes: function () {},
-        validateGrid: function () {},
+        colorize: function (event) {
+          if (this.isMouseDown) {
+            targetId = event.currentTarget.isMouseDowntargetDiv = event.targetId
+            if (this.colorMode) {
+              targetDiv.classList.add("blackBg")
+              this.casesColored.push(targetDiv)
+            } else {
+              targetDiv.classList.remove("blackBg")
+            }
+          }
+        },
+        mouseDown: function () { this.isMouseDown = true },
+        mouseUp: function () { this.isMouseDown = false },
+        resetGridAndIndexes: function () { },
+        validateGrid: function () { },
         zoomMinus: function () {
           this.mouseUp()
-          if (this.zoom>= 65){
-            this.zoom -=5
+          if (this.zoom >= 65) {
+            this.zoom -= 5
           }
         },
         zoomPlus: function () {
           this.mouseUp()
 
-          if (this.zoom<100){
-            this.zoom+=5
+          if (this.zoom < 100) {
+            this.zoom += 5
           }
         },
-        loadImage: function () {}
+        loadImage: function () { }
       }
     }).mount('#app');
   </script>
 </body>
+
 </html>
