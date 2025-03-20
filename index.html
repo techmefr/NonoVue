@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Nonogramme</title>
 	<script src="https://unpkg.com/vue@3"></script>
-	<script src="html2canvas.js"></script>
+	<script src="https://html2canvas.org/dist/html2canvas.min.js"></script>
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 </head>
 
@@ -85,14 +85,14 @@
 	      	},
 	      	resetGrid: function () {
 		        this.mouseUp()
-		        // 1
+		        // 1. Nettoyage des cases coloriées manuellement
 		        var nbCases = this.casesColored.length
 		        for (i = 0; i < nbCases; i++) {
 		          if(this.casesColored[i] && this.casesColored[i].classList)
 		            this.casesColored[i].classList.remove("blackBg")
 		        } 
 		        this.casesColored = []
-		        // 2
+		        // 2. Nettoyage des cases coloriées par chargement d'image
 		        nbCases = this.casesColoredLoaded.length
 		        for (i = 0; i < nbCases; i++) {
 		          if(this.casesColoredLoaded[i] && this.casesColoredLoaded[i].classList)
@@ -101,12 +101,12 @@
 		        this.casesColoredLoaded = []
 	      	},
 	    	resetIndices: function () {
-	    		// Clean des indices
-		        // Top
+	    		// Nettoyage des indices
+		        // Indices du haut
 		        for (i = 0; i < this.casesIndicesT.length; i++) {
 		          this.casesIndicesT[i].innerHTML = ""
 		        }
-		        // Left
+		        // Indices de gauche
 		        for (i = 0; i < this.casesIndicesL.length; i++) {
 		          this.casesIndicesL[i].innerHTML = ""
 		        }
@@ -130,9 +130,6 @@
         		this.resetIndices()
         		this.removeCanvas()
       		},
-      		validGrid: function () {
-
-      		},
       		zoomMinus: function () {
       			this.mouseUp()
 		        if (this.zoom >= 65) {
@@ -148,15 +145,19 @@
 		    validGrid: function () {
 		        this.mouseUp()
 		        this.removeCanvas()
-		        // Clean des indices
+		        // Nettoyage des indices
 		        this.resetIndices()
+		        // Réinitialisation des tableaux
+		        this.tableauLignesDeCases = []
+		        this.tableauColDeCases = []
+		        
 		        // Création d'un tableau par lignes
-		        for(var ligne=1 ; ligne<26; ligne++) {
+		        for(var ligne=1; ligne<26; ligne++) {
 		          var ligneArray = []
 		          var colArray = []
 		          var cpt1 = 0
 
-		          for(var col=1 ; col<26; col++) {
+		          for(var col=1; col<26; col++) {
 		            var laCase = document.getElementById(ligne+"_"+col)
 		            var laCase2 = document.getElementById(col+"_"+ligne)
 		            var indiceLigne = document.getElementById("indiceL_"+ligne)
@@ -164,6 +165,10 @@
 		            if(laCase.classList.contains("blackBg")) {
 		              ligneArray.push(true)
 		              cpt1++
+		              // Vérification si on est à la fin de la ligne
+		              if (col == 25 && cpt1 > 0) {
+		                indiceLigne.innerHTML = indiceLigne.innerHTML + cpt1 + " | "
+		              }
 		            } else {
 		              ligneArray.push(false)
 		              if(cpt1 > 0) {
@@ -180,18 +185,22 @@
 		          }  
 		           // Ajout des lignes au tableau de lignes
 		          this.tableauLignesDeCases.push(ligneArray)
-		           // Ajout des col au tableau de col
+		           // Ajout des colonnes au tableau de colonnes
 		          this.tableauColDeCases.push(colArray)
-		        } // For
+		        } // Fin boucle for
 
-		        // Calcul des nb sur col
-		        for(var col=1 ; col<26; col++) {
+		        // Calcul des indices sur colonnes
+		        for(var col=1; col<26; col++) {
 		          var cpt1 = 0
-		          for(var ligne=1 ; ligne<26; ligne++) {
+		          for(var ligne=1; ligne<26; ligne++) {
 		            var laCase = document.getElementById(ligne+"_"+col)
 		            var indiceCol = document.getElementById("indiceT_"+col)
 		            if(laCase.classList.contains("blackBg")) {
 		              cpt1++
+		              // Vérification si on est à la fin de la colonne
+		              if (ligne == 25 && cpt1 > 0) {
+		                indiceCol.innerHTML = indiceCol.innerHTML + cpt1 + "<br/><br/>"
+		              }
 		            } else {
 		              if(cpt1 > 0) {
 		                indiceCol.innerHTML = indiceCol.innerHTML + cpt1 + "<br/><br/>"
@@ -199,9 +208,9 @@
 		              }
 		            }
 		          }  
-		        } // For
+		        } // Fin boucle for
 
-		        // Masquage indices
+		        // Masquage des indices pour la capture de la solution
 		        for (i = 0; i < this.casesIndicesT.length; i++) {
 		          this.casesIndicesT[i].dataset.html2canvasIgnore = "true"
 		        }
@@ -209,7 +218,7 @@
 		          this.casesIndicesL[i].dataset.html2canvasIgnore = "true"
 		        }
 
-		        // Création de l'image mignature de solution
+		        // Création de l'image miniature de solution
 		        html2canvas(document.querySelector("#container")).then(canvas => {
 		            canvas.style.width = "680px"
 		            canvas.style.height = "500px"
@@ -219,9 +228,9 @@
 		            this.downloadGridImage(image, 'Grille-Solution.png');
 		        });
 
-		        // Nettoyage image
+		        // Nettoyage de la grille pour l'image de jeu
 		        this.resetGrid()
-		        // Affichage indices
+		        // Affichage des indices pour l'image de jeu
 		        for (i = 0; i < this.casesIndicesT.length; i++) {
 		          delete this.casesIndicesT[i].dataset.html2canvasIgnore;
 		        }
@@ -229,7 +238,7 @@
 		          delete this.casesIndicesL[i].dataset.html2canvasIgnore;
 		        }
 
-		        // Création de l'image
+		        // Création de l'image de jeu
 		        html2canvas(document.querySelector("#container")).then(canvas => {
 		            document.body.appendChild(canvas)
 		            // Export
@@ -237,7 +246,7 @@
 		            this.downloadGridImage(image, 'Grille.png');
 		        });
 
-		    }, // Fin valid grid
+		    }, // Fin validGrid
 		    downloadGridImage: function(data, filename = 'Grille.png') {
 		        var a = document.createElement('a');
 		        a.href = data;
